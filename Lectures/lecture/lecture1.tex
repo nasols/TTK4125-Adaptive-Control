@@ -1,0 +1,130 @@
+\section*{Lecture 1 Notes}
+
+\subsection*{System identification and parameter estimation}
+
+System identification usually is an iterative process where you build a model from data. 
+The usual steps are: 
+\begin{itemize}
+    \item Design an experiment
+    \item Select an apropriate model structure
+    \item Select an apropriate parameter estimation methd, and apply it to the data
+    \item Model validation
+    \item Evaluate the model and go back if model is not good enough. 
+\end{itemize}
+
+In this course we assume that the system is controllable and that its parameters are uncertain. 
+We express this as: \\
+
+\nonlinsys
+
+Where $f$ and $h$ are known functions, while the $\theta$ vector constitutes the unknown parameters. 
+The input $u$ and output $y$ are measurable, while the state $x$ may or may not be measurable.
+For the majority of the course, we assume linear structure of the system: \\
+\linsys
+
+In most system estimation problems, $\theta$ is assumed to be constant. In this case we 
+can just estimate a model given a bach of data. In control applications, we get datapoints continuously,
+so having algorithms that can update the estimate is preffered. 
+
+The recurcive algorithms usually expect constant parameters aswell, but they pose some good qualities. 
+1. they are able to do real-time or online estimation. 2. they can handle slowly changing parameters, slow relative to system dynamics. 3. Can handle sudden but rare changes in parameters. 
+
+Adaptive control is therefore not only about estimating parameters of an model, but also about detecting faults.
+We can create parameters that we assume to be constant, but if we detect changes they signal that something is wrong in the system. 
+This could also be an approach to making an adaptive controller. 
+
+\subsection*{What is adaptive control, and why do we need it?}
+To illustrate adaptive control we will look at a simple example.
+Take the simplest possivle linear system:
+\begin{align}
+    \dot{x}(t) = a \cdot x(t) + u(t), x(0)=0
+\end{align}
+
+A possible control law for this system, where the goal is to drive it to zero: 
+\begin{align}
+    u(t) = -\hat{a}(t)x(t) - cx(t)
+\end{align}
+With c being a positive constant, and $\hat{a}(t)$ being an estimate of the parameter $a$.
+The closed loop system is then:
+\begin{align}
+    \dot{x}(t) = -cx(t) + (a - \hat{a}(t))x(t)
+\end{align}
+
+We need to find a bounded but sufficiently good estimate of $a$ for the regulation 
+objective to be met. We start by setting $\hat{a}(0) = a_0$ as some initial guess. As time passes, 
+the signals $x(t)$ and $u(t)$ are measured, and we can use these to update our estimate $\hat{a}(t)$.
+
+We define $\tilde{a}(t) = \hat{a}(t) - a$, this is the parameter estimation error. 
+Now consider the Lyapunov function:
+\begin{align}
+    V(x, \tilde{a}) = x^2 + \tilde{a}^2
+\end{align}
+Now, if V goes to zero, then both $x$ and $\tilde{a}$ go to zero. This means that
+$\hat{a} \rightarrow a$. 
+We can differentiate V:
+\begin{align}
+    \dot{V} = -2cx^2 (t) - 2\tilde{a}(t)x^2 (t) + 2\tilde{a}(t)\dot{\hat{a}}
+\end{align}
+
+Now, looking at each term: 
+\begin{itemize}
+    \item The first term is always negative, and is the term that will make $x(t)$ go to zero. 
+    \item The second term is indefinite, and could be positive or negative. 
+    \item The third term is also indefinite, but we can choose $\dot{\hat{a}}$ ourselves.
+\end{itemize}
+
+By selecting 
+\begin{align}
+    \dot{\hat{a}}(t) = x^2 (t), \hat{a}(0) = a_0
+\end{align}
+we get
+\begin{align}
+    \dot{V} = -2cx^2 (t) \leq 0
+\end{align}
+
+Now $V$ is positive definite and $\dot{V}$ is negative semi-definite.
+$V$ is therefore bounded implying that $x(t)$ and $\tilde{a}(t)$ are bounded.
+And as $V$ is bounded and not increasing, it converges to something, and $\dot{V}$ converges to zero. 
+
+This is an adaptive control law, consisting of the input 
+\begin{align}
+    u(t) = -(\hat{a} (t) + c)x(t)
+\end{align}
+and the adaptive law 
+\begin{align}
+    \dot{\hat{a}}(t) = x^2 (t), \hat{a}(0) = a_0
+\end{align}
+
+Notice that we introduced nonlinearities in the linear system, so to analyze its properties 
+we would need to use Lyapunov theory. Also notice that the adaptive law drives x to zero but it does not necessarily drive 
+$\tilde{a}$ to zero. But it does drive $\tilde{a}$ to a sufficiently correct value to control the system.
+
+In more complex systems, we take a modular approach to this problem. We separate the estimation process 
+from the control design. Where the controller is design assuming known parameters. 
+
+
+\subsection*{Signal Spaces}
+To use our adaptive laws, we need to know that the signals we use are bounded and integrable.
+We define $\Lagr_p$-spaces, $p = 1,2,...,\infty$.
+For a continuous signal $f: [0, \infty) \rightarrow \mathcal{R}^n$
+\begin{align}
+    \int_{0}^{{\infty}} |f(t)|^p dt < \infty \Leftrightarrow f \in \Lagr_p
+\end{align}
+Meaning that the p'th power of the signal is integrable and bounded up to $p$. 
+Then we define the $\Lagr_{\infty}$ space as:
+\begin{align}
+    \sup_{t \geq 0} |f(t)| < \infty \Leftrightarrow f \in \Lagr_{\infty}
+\end{align}
+This is the class of bounded functions. 
+We can norm these vectorspaces: 
+\begin{align}
+    ||f||_p = \left( \int_{0}^{\infty} |f(t)|^p dt \right)^{1/p}, p = 1,2,3,... \\
+    ||f||_{\Lagr_\infty} = \sup_{t \geq 0} |f(t)|
+\end{align}
+We have the equivalent for discrete time signals: 
+\begin{align}
+    \sum_{k=0}^{\infty} |f(k)|^p < \infty \Leftrightarrow f \in l_p \\
+    \sup_{k \in \mathcal{Z}^+} |f(k)| < \infty \Leftrightarrow f \in l_{\infty} \\
+    ||f||_p = \left( \sum_{k=0}^{\infty} |f(k)|^p \right)^{1/p}, p = 1,2,3,... \\
+    ||f||_{l_\infty} = \sup_{k \in \mathcal{Z}^+} |f(k)|
+\end{align}

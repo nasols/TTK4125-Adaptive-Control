@@ -1,0 +1,87 @@
+\documentclass{article}
+
+\usepackage{
+    natbib,      % Citations and bibliography
+    fullpage,    % Sets all margins to be 1 inch
+    enumitem,    % Customizes lists
+    amsmath,     % Mathematical typesetting
+    amssymb,     % Additional mathematical symbols
+    graphicx,    % Inclusion of graphics
+    hyperref,    % For URLs
+    float,       % Control over floating objects
+    subcaption,  % Sub-captions for sub-figures
+    tcolorbox,   % Colored boxes
+    xcolor,      % Color options
+    listings,    % Python code
+    xfrac,       % Slanted fractions
+}
+
+\tcbuselibrary{listings}
+\usepackage[mathscr]{euscript} % Caligraphy X and Y for alphabets in statistical inference
+
+\usepackage{accents}
+\usepackage{array}
+
+\usepackage{titlesec}
+\usepackage{dsfont}
+
+% Remove leading vertical white space before align-blocks
+\usepackage{etoolbox}
+
+% Patch the align environment to set no extra space above
+\AtBeginEnvironment{align}{%
+  \setlength{\abovedisplayskip}{0pt}%
+  \setlength{\abovedisplayshortskip}{0pt}%
+}
+
+% If you also use align*, you can patch it similarly:
+\AtBeginEnvironment{align*}{%
+  \setlength{\abovedisplayskip}{0pt}%
+  \setlength{\abovedisplayshortskip}{0pt}%
+}
+
+% Set section heading font size to 16pt with a baseline skip of 20pt and bold styling
+\titleformat{\section}{\fontsize{14}{20}\bfseries}{\thesection}{1em}{}
+
+% Custom macros
+%\usepackage{tlmacros}
+
+% Vertical line space for math
+\setlength{\jot}{10pt}
+
+% Spacing between lines in matrix / cells
+\renewcommand{\arraystretch}{1.5}
+
+% Horizontal spacing for math
+\everymath{\setlength{\thinmuskip}{4mu}\setlength{\medmuskip}{4mu}\setlength{\thickmuskip}{8mu}}
+\everydisplay{\setlength{\thinmuskip}{4mu}\setlength{\medmuskip}{4mu}\setlength{\thickmuskip}{8mu}}
+
+% Indent space for paragraphs
+\setlength{\parindent}{0pt}
+
+
+%%% Equation label configs
+
+% define a new counter that holds your “section‐prefix”
+\newcounter{eqsection}
+
+% tell LaTeX to print equation numbers as <eqsection>.<equation>
+\renewcommand{\theequation}{\arabic{eqsection}.\arabic{equation}}
+
+% a helper to set the prefix and reset the per‐section numbering
+\newcommand{\seteqsection}[1]{%
+  \setcounter{eqsection}{#1}%    ← choose your “3” or “5” here
+  \setcounter{equation}{0}%      ← start sub‐numbers back at .1
+}
+
+%%
+
+\title{TMA4265 - Exercise 1}
+\author{Jonas B Olsen : \texttt{jonasbol@stud.ntnu.no}}
+
+\begin{document}
+\maketitle
+
+\end{document}
+
+
