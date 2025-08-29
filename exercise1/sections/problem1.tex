@@ -1,0 +1,50 @@
+\section{Problem 1}
+
+\begin{itemize}
+    \item a) 
+    In the early days of adaptive control, one of the main problems they wanted to solve was flight controllers. 
+    The dynamics of an aricraft are nonlinear and modelling the aicraft is very difficult, and their dynamics change
+    depending on the operating point of the craft. The traditional control methods with static gains could not attack this problem.
+
+    \item b)    
+    The main difference between adaptive and robust control is that robust control tries to create a controller working within ranges that the system is expected to work within. 
+    In these applications, the system parameters are know to a degree in which adaptive, or online, control is not needed. 
+    In adaptive control, the system parameters ar unknown, and the goal of the controller is to change and adapt to these. 
+
+    \item c) 
+    The main disadvantages of gain scheduling is that the switch between different gains introduce a discontinuity into the system, which again can cause instabilities. 
+    This is especially true if the gains are very different, or if the system changes rapidly between operating points, making the scheduling happen at a high frequency.
+    This is often addressed by either interpolating between the gains or by introducing several operating points to make for a smoother transition. 
+    Another disadvantage is that all these gain sets are pre-calculated, so the controller works offline. If the system encounters 
+    big changes, in its dynamics or its environment, this could not be accounted for in the pre-computed gains. In this case the system can't 
+    adapt to these changes and the performance will degrade. 
+
+    \item d) 
+    In direct adaptive control the controller parameters are adjusted directly to meet performance metrics. Therefore, skipping the model estimaton 
+    and rather adjusting the controller to follow some refrence model directly.
+    In indirect adaptive control, the system first estimates the system parameters then estimating the controller parameters based on these to meet requirements. 
+    DIAGRAM HERE 
+
+    \item e)
+    For a LTI system to be minimum phase, it has all zeros with real part in the left half plane. 
+
+    \item f)
+    The certainty principle is that we assume the estimated parameters to be the true parameters of the system, and calculate controller parameters thereafter. 
+    We dont make any further assumptions on the uncertainty of the parameters. 
+
+    \item g) 
+    Some basic on-line parameter estimation methods are: 
+    \begin{itemize}
+        \item Kalman filters
+        \item Recursive least squares
+        \item Gradient methods
+        \item Lyapunov-based update laws
+    \end{itemize}
+
+
+
+
+
+
+
+\end{itemize}
