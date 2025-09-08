@@ -1,0 +1,75 @@
+\section*{Problems}
+
+\newcommand{\vt}{$\theta$}
+\newcommand{\vin}{$\in$}
+\newcommand{\veps}{$\varepsilon$}
+\newcommand{\Lagr}{\mathcal{L}}
+
+\Large{Preliminary}
+
+Our Static Parameter Estimator (SPM) is given by: $y=\theta^* \phi(t)$, where $\theta$ is an estimate of $\theta^*$ which is an unknown constant.  
+We define the parameter estimation error as: \\ 
+\begin{math}
+    \tilde{\theta}(t) = \theta(t) - \theta ^*
+\end{math} 
+\\
+We then have the estimation error as: \\
+\begin{math}
+    \varepsilon(t) = y(t) - \theta \phi = -\tilde{\theta}\phi(t)
+\end{math}\\
+The given Lyapunov function is: \\
+\begin{math}
+    V(t) = \frac{1}{2 \gamma} \tilde{\theta}^2
+\end{math} \\
+
+Which is positive definite, and its derivative is: \\
+\begin{math}
+    \dot{V}(t) = \frac{1}{\gamma} \tilde{\theta} \dot{\tilde{\theta}} = -\frac{1}{\gamma} \tilde{\theta} \dot{\theta} = \frac{1}{\gamma} \tilde{\theta} (-\gamma \phi ^2 \tilde{\theta}) = -\phi^2 \tilde{\theta}^2 = -\varepsilon^2 \leq 0
+\end{math} \\
+Which is negative semi-definite. The update law is given as: \\
+\begin{math}
+    \dot{\theta} = \gamma \phi \varepsilon = - \gamma \phi^2 \tilde{\theta}
+\end{math} \\
+
+
+\begin{enumerate}
+    \item $\theta \in \Lagr_{\infty}$ \\
+    This claim is the same as the condition: $sup_{t\geq0} |f(t)| < \infty  \Longleftrightarrow f \in \Lagr_{\infty}$
+    We have a positive definite function $V(t)$ with a semi-negative definite derivative $\dot{V}(t)$, given the update law.  
+    This means that since $V$ is non-increasing and so is $\tilde{\theta}$, and since $\theta ^*$ is constant, then $\theta(t)$ must be non-increasing aswell, implying that it's bounded.
+    implying that $\theta \in \Lagr_{\infty}$.
+    
+    \item $\varepsilon \in \Lagr_{2}$ \\
+    Following the argumentation presented in lecture 2, we have: \\
+    \begin{math}
+        \int_{0}^{\infty}|\varepsilon|^2 dt = \int_{0}^{\infty} -\dot{V} dt = V(0) - V(t)_{\infty} < \infty
+    \end{math} \\
+    Implying that $\varepsilon \in \Lagr_{2}$.
+
+    \item $\varepsilon \in \Lagr_{\infty}$ given that $\phi \in \Lagr_{\infty}$ \\
+    Meaning we need $\sup_{t\geq0 |\varepsilon|} < \infty$ which would imply $sup_{t \geq 0 } |\tilde{\theta} \phi| < \infty$. \\ 
+    We have already shown that $\tilde{\theta} \in \Lagr_{\infty}$, and since $\phi \in \Lagr_{\infty}$ is given, then the product of the two must also be bounded, which implies that $\varepsilon \in \Lagr_{\infty}$.
+
+    \item $\varepsilon \leftrightarrow 0$ given $\phi , \dot{\phi} \in \Lagr_{\infty}$ \\ 
+    By Lemma A.4.7, if $\varepsilon, \dot{\varepsilon} \in \Lagr$, and $\varepsilon \in \Lagr_p$ for some $p \in [1, \infty)$, then $\varepsilon \rightarrow 0$ as $t \rightarrow \infty$. \\
+    We have already shown that $\varepsilon \in \Lagr_2$, so we need to show that $\varepsilon, \dot{\varepsilon} \in \Lagr_{\infty}$. \\
+    Given that $\phi \in \Lagr_{\infty}$ we have that $\varepsilon \in \Lagr_{\infty}$ already. \\
+    Now, $sup_{t \geq 0} |\dot{\varepsilon}| \Rightarrow sup_{t \geq 0} |-\dot{\theta}\phi - \tilde{\theta}\dot{\phi}|$  \\
+    Already, $\theta \in \Lagr_{\infty}$ \\ 
+    And with $\dot{\theta} = \gamma \varepsilon \phi$ and now if $\phi \in \Lagr_{\infty}$ is given, then $\varepsilon \in \Lagr_{\infty}$ giving $\dot{\theta} \in \Lagr_{\infty}$. \\
+    
+    Resulting in $\dot{\theta}, \theta \in \Lagr_{\infty}$ using $\phi, \dot{\phi} \in \Lagr_{\infty}$ and $\varepsilon, \dot{\varepsilon} \in \Lagr_{\infty}$ and $\varepsilon \in \Lagr_2$. Now by using "Barbalat's Lemma", we can say that 
+    $\varepsilon \rightarrow 0$ as $t \rightarrow \infty$.
+    \\
+    \\
+    From this we cannot conclude that $\theta \rightarrow \theta^*$. \\
+    From $\varepsilon = y - \theta \phi$ we see that this only tends to zero if either $\phi \rightarrow 0$ or $\tilde{\theta} \rightarrow 0$. \\
+    This shows that we can reach zero estimation error without zero parameter estimation error. 
+    In this case if $\varepsilon = 0, \dot{\theta} = 0$, our $\theta$ is not updating, even though it might be wrong. We can see this relation from \\ 
+    \begin{math}
+        \dot{\tilde{\theta}} = - \gamma \tilde{\theta} \phi^2 
+    \end{math} \\
+    So we need $\phi \neq 0$ for $\dot{\tilde{\theta}}$ to be driving $\tilde{\theta}$ to change. \\ 
+    This is known as persisten excitation. 
+    
+\end{enumerate}
